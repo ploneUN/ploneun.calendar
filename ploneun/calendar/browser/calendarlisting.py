@@ -1,6 +1,7 @@
 from five import grok
 from Products.CMFCore.interfaces import IContentish
 from Products.CMFPlone.PloneBatch import Batch
+from DateTime import DateTime
 
 grok.templatedir('templates')
 
@@ -62,3 +63,19 @@ class AllListing(CalendarListing):
     
     def _items(self):
         return self.context.results()
+
+class UpcomingListing(CalendarListing):
+    grok.name('list_upcoming')
+    
+    def _items(self):
+        today = DateTime()
+        return filter(lambda x: (x.start > today) if x.start else False, self.context.results())
+
+class PastListing(CalendarListing):
+    grok.name('list_past')
+    
+    def _items(self):
+        today = DateTime()
+        return filter(lambda x: (x.end < today) if x.end else False, self.context.results())
+
+
