@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="ploneun.calendar"
+      metal:use-macro="context/main_template/macros/master">
+<head>
+</head>
+<body>
+  <div metal:fill-slot="content-core">
+      <div metal:define-macro="content-core">
+       <table>
+           <table style="width:100%">
+               <tr>
+                   <td>
+                       <form tal:attributes="action request/getURL" method="GET">
+                           <select name="month">
+                               <option tal:repeat="m view/months" 
+                               tal:attributes="value m/value;
+                               selected m/selected"
+                               tal:content="m/name"></option>
+                           </select>
+                           <input type="submit" value="Update"/>
+                       </form>
+                   </td>
+                   <td style="text-align:right">
+
+                   </td>
+               </tr>
+           </table>
+       </table>
+
+     <table tal:condition="view/items" width="100%" class="listing">
+         <tr>
+             <th>Date</th>
+             <th>Activity / Purpose</th>
+             <th>Place</th>
+             <th>Contact Person</th>
+         </tr>
+         <tr tal:repeat="item view/items">
+             <tal:block define="item_obj item/getObject">
+             <td>
+                    <span tal:content='python:item.start.strftime("%d %b")'></span>
+                    &nbsp;-&nbsp;
+                    <span tal:content='python:item.end.strftime("%d %b")'></span></td>
+             <td><a tal:attributes="href item_obj/absolute_url"><span tal:content="item/Title"></span></a>
+             <td><span tal:content="item/location | nothing"></span>
+             <td>
+                 <span tal:content="item_obj/contactName"></span>
+             </td>
+             </tal:block>
+        </tr>
+
+     </table>
+
+    </div>
+  </div>
+</body>
+</html>
