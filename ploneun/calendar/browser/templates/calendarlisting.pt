@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="ploneun.calendar"
+      metal:use-macro="context/main_template/macros/master">
+<head>
+    <metal:block fill-slot="style_slot">
+        <link type="text/css"
+            rel="stylesheet"
+            media="all" 
+            tal:attributes="href string:${context/portal_url}/++resource++ploneun.calendar/listing.css;" />
+    </metal:block>
+</head>
+<body>
+    <div metal:fill-slot="content-core">
+        <div metal:define-macro="content-core">
+            <div id="ploneun-calendar-listing" tal:define="batch view/months">
+                <div class="eventlist_month" tal:repeat="month view/months">
+                    <h2>
+                        <tal:block tal:replace="month/month_name">monthname</tal:block>
+                        <tal:block content="month/year"/>
+                    </h2>
+                    <div class="vevent event" tal:repeat="event month/events">
+
+                        <div tal:define="event_obj event/event/getObject"> 
+
+                            <div class="event_details">
+                                <abbr class="dtstart"
+                                    title="2002-12-04"
+                                    tal:attributes="title event/start/isoformat | default">
+                                    <tal:block tal:replace="month/month_name">monthname</tal:block>
+                                    <tal:block content="event/day"/>
+                                </abbr>
+                            </div>
+                            <div class="event_body">
+                                <a class="summary event_title"
+                                    tal:attributes="href event/url">
+                                    <span tal:content="event/title"></span>
+                                </a>
+                                <div class="dates">
+                                    <span tal:content="event/day"></span>
+                                    <tal:block 
+                                        tal:replace="event/month_name">monthname</tal:block>
+                                    -
+                                    <span tal:content="event/day_end"></span>
+                                    <tal:block
+                                        tal:replace="event/month_end_name"></tal:block>
+                                </div>
+
+
+
+                                <div class="location">
+                                    <div class="event_list_members"
+                                        tal:condition="event_obj/members | nothing">
+                                        <b>Mission Member(s):</b> <span tal:repeat="member
+                                            event_obj/members"
+                                            ><span tal:content="member"></span>, </span></div>
+
+                                    <div class="event_list_members"
+                                        tal:condition="event_obj/attendees | nothing">
+                                        <b>Attendee(s):</b> <span tal:repeat="member
+                                            event_obj/attendees"
+                                            ><span tal:content="member"></span>, </span></div>
+
+                                    <div class="event_list_members"
+                                        tal:condition="event_obj/office | nothing">
+                                        <b>Office(s):</b> <span tal:repeat="office
+                                            event_obj/office"
+                                            ><span tal:content="office"></span>, </span></div>
+                                    <b><span style="color: #333333"
+                                            tal:content="string: Location:
+                                            ${event/location}">Location</span></b>
+                                    <span
+                                        tal:condition="event_obj/mission_event_location
+                                        | nothing"
+                                        tal:content="event_obj/mission_event_location"></span>
+                                </div>
+                                <div class="description" tal:condition="event/description" tal:content="event/description"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div metal:use-macro="here/batch_macros/macros/navigation" />
+            </div>
+        </div>
+    </div>
+</body>
+</html>
