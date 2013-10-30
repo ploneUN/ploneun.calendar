@@ -2,11 +2,11 @@ from five import grok
 from Products.CMFCore.interfaces import IContentish
 from Products.CMFPlone.PloneBatch import Batch
 from DateTime import DateTime
-
+from Solgema.fullcalendar.interfaces import ISolgemaFullcalendarMarker
 grok.templatedir('templates')
 
 class CalendarListing(grok.View):
-    grok.context(IContentish)
+    grok.context(ISolgemaFullcalendarMarker)
     grok.baseclass()
     grok.name('calendarlisting')
     grok.require('zope2.View')
@@ -23,6 +23,11 @@ class CalendarListing(grok.View):
         month_info = []
         old_month_year = None
         for event in events:
+
+            # ignore if content does not have start/end
+            if not event.start:
+                continue 
+
             start = event.start
             end = event.end
             month = str(start.month())
@@ -63,6 +68,7 @@ class AllListing(CalendarListing):
     
     def _items(self):
         return self.context.results()
+
 
 class UpcomingListing(CalendarListing):
     grok.name('list_upcoming')
