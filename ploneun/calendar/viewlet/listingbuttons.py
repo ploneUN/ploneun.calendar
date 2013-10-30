@@ -43,7 +43,6 @@ class ListingButtons(grok.Viewlet):
               'id': 'calendar_table',
               'url': url + '/calendar_table',
               'label': u'Table'
-            }
         }]
 
         for button in buttons:
