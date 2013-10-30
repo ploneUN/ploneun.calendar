@@ -1,0 +1,24 @@
+<div id="ploneun-calendar-listingbuttons">
+    <div style="text-align:right;padding-bottom:10px">
+        <span id="calendarlistingbuttons">
+            <tal:r repeat="button viewlet/buttons">
+                <input  type="radio"
+                    tal:attributes="href button/url;
+                    checked python:'checked' if button['checked'] else '';
+                    name string:listingbutton-${button/id};
+                    id string:listingbutton-${button/id};"
+                    />
+                <label tal:attributes="for string:listingbutton-${button/id}"
+                    tal:content="button/label"></label>
+            </tal:r>
+        </span>
+        <script>
+            jq(document).ready(function () {
+                jq('#calendarlistingbuttons').buttonset();
+                jq('#calendarlistingbuttons input').button().click(function() {
+                    window.location = jq(this).attr('href');
+                });
+            })
+        </script>
+    </div>
+</div>
