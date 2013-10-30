@@ -35,6 +35,7 @@ setup(name='ploneun.calendar',
           'plone.multilingualbehavior',
           'plone.app.versioningbehavior',
           'Solgema.fullcalendar>=2.3.1',
+          'plone.api',
           # -*- Extra requirements: -*-
       ],
       extras_require={
