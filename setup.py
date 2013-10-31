@@ -36,7 +36,6 @@ setup(name='ploneun.calendar',
           'plone.app.versioningbehavior',
           'Solgema.fullcalendar==2.3.1',
           'plone.api',
-          'z3c.jbot'
           # -*- Extra requirements: -*-
       ],
       extras_require={

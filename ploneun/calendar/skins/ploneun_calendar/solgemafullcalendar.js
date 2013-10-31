@@ -1,5 +1,8 @@
 // XXX: better wrap whole JS in an anonymous function, pass jQuery and alter
 //      ``jq`` with ``$``
+//
+// XXX: Patch added eventRender option
+//
 if (typeof(window['jq']) == "undefined") jq = jQuery;
 
 if (!extraContentMenuActions) var extraContentMenuActions = [];
@@ -735,7 +738,7 @@ function calendarOptions() {
           }
         });
       };
-      options['eventRender'] = SolgemaFullcalendarVars.eventRender,
+
       options['loading'] = function(bool) {
         if (bool) {
           jq('#kss-spinner').show();
@@ -772,6 +775,15 @@ function calendarOptions() {
         }
       };
       options['target_folder'] = SolgemaFullcalendarVars.target_folder;
+
+      // XXX PATCH ALERT: This doesnt exist in solgema.fullcalendar
+      options['eventRender'] = function(fcevent, element) {
+          if (fcevent.footnote) {
+              jq('.fc-event-inner', element).append(
+                      '<span style="text-align:right;display:block">' +
+                      fcevent.footnote + '</span>');
+          }
+      };
       return options;
 };
 
