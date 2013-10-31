@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<object name="portal_skins">
+    <object name="ploneun_calendar"
+        meta_type="Filesystem Directory View"
+        directory="ploneun.calendar:skins/ploneun_calendar"/>
+    <skin-path name="*">
+        <layer name="ploneun_calendar"
+                insert-before="solgemafullcalendar"/>
+    </skin-path>
+</object>

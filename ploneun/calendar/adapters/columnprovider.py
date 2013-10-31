@@ -6,6 +6,9 @@ class DefaultColumnProvider(grok.Adapter):
     grok.implements(ITableColumnProvider)
     grok.context(Interface)
 
+    def __init__(self, context):
+        self.context = context
+
     def header_row(self):
         return [
             u'Date',
@@ -29,6 +32,9 @@ class EventColumnProvider(grok.Adapter):
     grok.implements(ITableColumnProvider)
     grok.context(Interface)
     grok.name('Event')
+
+    def __init__(self, context):
+        self.context = context
 
     def header_row(self):
         return [

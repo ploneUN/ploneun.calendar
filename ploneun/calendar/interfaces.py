@@ -5,3 +5,6 @@ class IProductSpecific(Interface):
 
 class ITableColumnProvider(Interface):
     pass
+
+class ICalendarDataExtender(Interface):
+    pass
