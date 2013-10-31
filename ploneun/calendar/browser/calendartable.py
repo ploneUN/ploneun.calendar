@@ -63,7 +63,8 @@ class CalendarTable(grok.View):
 
     def columnprovider(self, portal_type):
         defaultcolumnprovider = ITableColumnProvider(self.context)
-        columnprovider = queryAdapter((self.context,), ITableColumnProvider)
+        columnprovider = queryAdapter((self.context,), ITableColumnProvider,
+                                        name=portal_type)
         columnprovider = columnprovider or defaultcolumnprovider
         return columnprovider
 
