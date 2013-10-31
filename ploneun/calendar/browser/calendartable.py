@@ -2,7 +2,9 @@ from five import grok
 from Products.CMFCore.interfaces import IContentish
 from datetime import datetime
 from Solgema.fullcalendar.interfaces import ISolgemaFullcalendarMarker
+from ploneun.calendar.interfaces import ITableColumnProvider
 import calendar
+from zope.component import queryAdapter
 grok.templatedir('templates')
 
 class CalendarTable(grok.View):
@@ -39,4 +41,37 @@ class CalendarTable(grok.View):
             return False
 
         return filter(filter_month_year, results)
+
+    def items_by_type(self):
+        items = self.items()
+        types = {}
+        for item in items:
+            types.setdefault(item.portal_type, [])
+            types[item.portal_type].append(item)
+        return types
+
+    def extract_types(self, items_by_type):
+        result = []
+        portal_types = self.context.portal_types
+        for i in items_by_type.keys():
+            title = portal_types[i].title
+            result.append({
+                'id': i,
+                'title': title
+            })
+        return result
+
+    def columnprovider(self, portal_type):
+        defaultcolumnprovider = ITableColumnProvider(self.context)
+        columnprovider = queryAdapter((self.context,), ITableColumnProvider)
+        columnprovider = columnprovider or defaultcolumnprovider
+        return columnprovider
+
+    def type_columns(self, portal_type):
+        colprovider = self.columnprovider(portal_type)
+        return colprovider.header_row()
+
+    def item_columns(self, item):
+        colprovider = self.columnprovider(item.portal_type)
+        return colprovider.item_row(item)
 

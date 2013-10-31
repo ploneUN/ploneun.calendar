@@ -24,37 +24,35 @@
                            <input type="submit" value="Update"/>
                        </form>
                    </td>
-                   <td style="text-align:right">
-
+                   <td style="text-align:right"><!--
+                       <form tal:attributes="action string:${context/absolute_url}/download_pdf?view=calendartable_pdf"
+                            method="GET">
+                            <input type="hidden" name="month" tal:attributes="value view/month"/>
+                            <input type="submit" value="Download PDF"/>
+                        </form>-->
                    </td>
                </tr>
            </table>
        </table>
 
-     <table tal:condition="view/items" width="100%" class="listing">
-         <tr>
-             <th>Date</th>
-             <th>Activity / Purpose</th>
-             <th>Place</th>
-             <th>Contact Person</th>
-         </tr>
-         <tr tal:repeat="item view/items">
-             <tal:block define="item_obj item/getObject">
-             <td>
-                    <span tal:content='python:item.start.strftime("%d %b")'></span>
-                    &nbsp;-&nbsp;
-                    <span tal:content='python:item.end.strftime("%d %b")'></span></td>
-             <td><a tal:attributes="href item_obj/absolute_url"><span tal:content="item/Title"></span></a>
-             <td><span tal:content="item/location | nothing"></span>
-             <td>
-                 <span tal:content="item_obj/contactName"></span>
-             </td>
-             </tal:block>
-        </tr>
+       <tal:block define="items view/items_by_type;
+           ptypes python:view.extract_types(items)"
+           repeat="ptype ptypes">
 
-     </table>
-
-    </div>
+           <h3 tal:content="ptype/title"></h3>
+           <table width="100%" class="listing">
+               <tr>
+                   <th tal:repeat="col python:view.type_columns(ptype['id'])"
+                       tal:content="structure col"></th>
+               </tr>
+               <tr tal:repeat="item python:items[ptype['id']]">
+                   <td tal:repeat="col python:view.item_columns(item)"
+                       tal:content="structure col">
+                   </td>
+               </tr>
+           </table>
+       </tal:block>
+   </div>
   </div>
 </body>
 </html>
