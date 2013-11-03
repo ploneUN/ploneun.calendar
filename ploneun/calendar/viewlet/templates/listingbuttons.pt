@@ -1,4 +1,4 @@
-<div id="ploneun-calendar-listingbuttons">
+<div id="ploneun-calendar-listingbuttons" tal:condition="viewlet/available">
     <div style="text-align:right;padding-bottom:10px">
         <span id="calendarlistingbuttons">
             <tal:r repeat="button viewlet/buttons">

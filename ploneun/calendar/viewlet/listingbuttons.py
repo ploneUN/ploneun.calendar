@@ -6,6 +6,8 @@ from Products.CMFCore.interfaces import IContentish
 from plone.app.layout.viewlets import interfaces as manager
 from ploneun.calendar.interfaces import IProductSpecific
 from Solgema.fullcalendar.interfaces import ISolgemaFullcalendarMarker
+from plone.app.collection.interfaces import ICollection
+from Products.ATContentTypes.interfaces.topic import IATTopic
 import os
 
 grok.templatedir('templates')
@@ -18,7 +20,14 @@ class ListingButtons(grok.Viewlet):
     grok.layer(IProductSpecific)
 
     def available(self):
-        return True
+        # only show on collection/topic
+        if not self.context.restrictedTraverse('@@iscalendarlayout')():
+            return False
+        if ICollection.providedBy(self.context):
+            return True
+        if IATTopic.providedBy(self.context):
+            return True
+        return False
 
     def buttons(self):
         current_view = os.path.basename(self.request.getURL())
