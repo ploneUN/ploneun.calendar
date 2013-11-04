@@ -21,7 +21,7 @@
                                selected m/selected"
                                tal:content="m/name"></option>
                            </select>
-                           <input type="submit" value="Update"/>
+                           <input class="visualNoPrint" type="submit" value="Update"/>
                        </form>
                    </td>
                    <td style="text-align:right"><!--
