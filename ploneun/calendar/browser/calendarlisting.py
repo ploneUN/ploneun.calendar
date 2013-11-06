@@ -51,8 +51,8 @@ class CalendarListing(grok.View):
                           'month_end' : end.month(),
                           'month_end_name': end.strftime('%b'),
                           'year_end' : end.year(),
-                          'title': event.title,
-                          'description': event.Description(),
+                          'title': event.Title,
+                          'description': event.Description,
                           'location': event.location,
                           'url': event.getURL(),
                           }
@@ -67,7 +67,7 @@ class AllListing(CalendarListing):
     grok.name('list_all')
     
     def _items(self):
-        return self.context.results()
+        return self.context.queryCatalog()
 
 
 class UpcomingListing(CalendarListing):
@@ -75,13 +75,15 @@ class UpcomingListing(CalendarListing):
     
     def _items(self):
         today = DateTime()
-        return filter(lambda x: (x.start > today) if x.start else False, self.context.results())
+        return filter(lambda x: (x.start > today) if x.start else False,
+                    self.context.queryCatalog())
 
 class PastListing(CalendarListing):
     grok.name('list_past')
     
     def _items(self):
         today = DateTime()
-        return filter(lambda x: (x.end < today) if x.end else False, self.context.results())
+        return filter(lambda x: (x.end < today) if x.end else False,
+                    self.context.queryCatalog())
 
 

@@ -23,8 +23,8 @@ class DefaultColumnProvider(grok.Adapter):
                     item.end.strftime('%d %b'))
         return [
             date,
-            '<a href="%s">%s</a>' % (item.getURL(), item.Title()),
-            item.Description()
+            '<a href="%s">%s</a>' % (item.getURL(), item.Title),
+            item.Description
         ]
 
 
@@ -49,7 +49,7 @@ class EventColumnProvider(grok.Adapter):
         return [
             '%s - %s' % (item.start.strftime('%d %b'), 
                             item.end.strftime('%d %b')),
-            '<a href="%s">%s</a>' % (item.getURL(), item.Title()),
+            '<a href="%s">%s</a>' % (item.getURL(), item.Title),
             item_obj.getField('location').get(item_obj),
             item_obj.getField('contactName').get(item_obj)
         ]
