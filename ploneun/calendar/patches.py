@@ -22,14 +22,18 @@ def _patch_solgema_collection_path_criteria():
         _args, filters = _orig_getCriteriaArgs(self)
         if 'path' in _args:
             path = _args['path']
-            if path == '../':
+            if '../' in path:
                 parent = aq_parent(self.context)
-                path = '/'.join(parent.getPhysicalPath())
+                pathtuple = parent.getPhysicalPath()
+                if path[3:]:
+                    pathtuple = pathtuple + (path[3:],)
+                path = '/'.join(pathtuple)
             
             _args['path'] = {
                 'query': path,
                 'depth': 1
             }
+
         return _args, filters
 
     CollectionEventSource._getCriteriaArgs = _getCriteriaArgs
