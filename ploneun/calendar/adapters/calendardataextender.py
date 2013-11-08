@@ -11,7 +11,18 @@ class DefaultCalendarDataExtender(grok.Adapter):
 
     def __call__(self, brain):
         return {
-            'footnote': 'Boo!!!'
+            'footnote': ''
         }
 
+class EventCalendarDataExtender(grok.Adapter):
+    grok.context(Interface)
+    grok.implements(ICalendarDataExtender)
+    grok.name('Event')
 
+    def __init__(self, context):
+        self.context = context
+
+    def __call__(self, brain):
+        return {
+            'footnote': brain.getObject().location or ''
+        }

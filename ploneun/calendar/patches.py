@@ -50,6 +50,7 @@ def _patch_solgema_data_extender():
 
     from zope.component.hooks import getSite
     from ploneun.calendar.interfaces import ICalendarDataExtender
+    from zope.component import getAdapter
 
     _orig_dict_from_events = adapters.dict_from_events
 
@@ -65,7 +66,7 @@ def _patch_solgema_data_extender():
                 brain = brains[0]
 
             portal_type = brain.portal_type if brain else None
-            extender = ICalendarDataExtender(site, portal_type)
+            extender = getAdapter(site, ICalendarDataExtender, name=portal_type)
             item.update(extender(brain))
             newresult.append(item)
         return newresult
